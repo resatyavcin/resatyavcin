@@ -1,4 +1,5 @@
 import Lanyard from "@/components/Lanyard";
+import TechMarquee from "@/components/TechMarquee";
 
 export default function Home() {
   return (
@@ -13,10 +14,11 @@ export default function Home() {
         gravity={1.25}
         size={0.41}
       />
-      <div className="pointer-events-none absolute right-6 bottom-6 left-6 z-10 text-right">
+      <div className="pointer-events-none absolute right-6 bottom-[5.25rem] left-6 z-20 text-right">
         <p className="text-[1.625rem] leading-none">Reşat Yavçin</p>
         <p className="mt-1.5 text-base leading-none text-foreground/60">Software Developer at TOMBank</p>
       </div>
+      <TechMarquee />
     </main>
   );
 }
