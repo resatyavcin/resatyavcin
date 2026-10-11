@@ -1,0 +1,46 @@
+{
+  "role": "Yazılım Mühendisi",
+  "today": "Bugün",
+  "paragraphs": [
+    "Şu anda TOM Bank'ta ağırlıklı olarak backend alanında çalışan bir yazılım geliştiriciyim. Ölçeklenebilir sistemler kurmayı, güvenilir servisler geliştirmeyi ve karmaşık problemlere pratik çözümler üretmeyi seviyorum.",
+    "Java ve Spring Boot kullanarak bankacılık süreçlerini destekleyen mikroservisler geliştiriyorum. Kampanya ve CRM sistemlerinden dijital sözleşme süreçlerine kadar farklı alanlarda çalışıyorum.",
+    "Bunun yanı sıra yapay zekâyı yazılım geliştirme süreçlerine dahil etmeye odaklanıyorum. Jira'daki işlerin yönetiminden kod geliştirmeye ve pull request oluşturmaya kadar çeşitli adımları kolaylaştıran otomasyonlar ve otonom AI agent'lar geliştiriyorum.",
+    "Backend çalışmalarımın yanında React ile kurum içi araçlar ve yönetim panelleri de geliştiriyorum.",
+    "Daha önce ise Vodafone'un frontend ekibinde çalıştım."
+  ],
+  "writing": "Yazılar",
+  "posts": [
+    {
+      "title": "Örnek yazı",
+      "description": "Bir yazıda metin, görsel ve kod nasıl durur.",
+      "href": "/writing/ornek"
+    },
+    {
+      "title": "Değişmezlik ve Final",
+      "description": "Java'da final'in nasıl çalıştığı ve gerçekte neyi sabit kıldığı.",
+      "href": "https://medium.com/p/1626f473fd7e"
+    },
+    {
+      "title": "Heap ve Stack",
+      "description": "Bir programın çalışma anında kullandığı iki bellek alanı.",
+      "href": "https://medium.com/p/b95e1a7d9a0b"
+    },
+    {
+      "title": "Veri, Değişken ve Tip (Java SE)",
+      "description": "Java'da veri, değişken ve tipin ne anlama geldiği.",
+      "href": "https://medium.com/p/ff120b88da7a"
+    },
+    {
+      "title": "Git İş Akışını Nasıl Sağlıklı Yönetirim?",
+      "description": "Bir Git iş akışını sağlıklı tutmak üzerine notlar.",
+      "href": "https://medium.com/p/68df73de7ad8"
+    }
+  ],
+  "more": "Daha fazla",
+  "moreBefore": "Yazılarımın devamını ",
+  "moreMiddle": " üzerinden, çalışmalarımı ",
+  "moreAfter": " üzerinden görebilirsin.",
+  "medium": "Medium",
+  "linkedin": "LinkedIn",
+  "languageLabel": "Dil"
+}

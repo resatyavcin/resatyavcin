@@ -1,0 +1,46 @@
+{
+  "role": "Software Engineer",
+  "today": "Today",
+  "paragraphs": [
+    "I work as a software developer at TOM Bank, primarily focused on backend engineering. I enjoy building scalable systems, designing reliable services, and finding better ways to solve complex problems.",
+    "I work with Java and Spring Boot to build microservices that power banking operations, from campaign and CRM systems to digital agreement workflows.",
+    "I'm also involved in bringing AI into the development lifecycle, building automations and autonomous agents that help engineering teams streamline their workflows, from Jira issues to code implementation and pull requests.",
+    "Along the way, I also build internal tools and back-office applications with React.",
+    "Previously, I worked on the frontend team at Vodafone."
+  ],
+  "writing": "Writing",
+  "posts": [
+    {
+      "title": "Sample writing",
+      "description": "How text, an image, and code sit in a post.",
+      "href": "/writing/ornek"
+    },
+    {
+      "title": "Değişmezlik ve Final",
+      "description": "How final works in Java, and what it actually makes constant.",
+      "href": "https://medium.com/p/1626f473fd7e"
+    },
+    {
+      "title": "Heap ve Stack",
+      "description": "The two memory areas a program uses at runtime.",
+      "href": "https://medium.com/p/b95e1a7d9a0b"
+    },
+    {
+      "title": "Veri, Değişken ve Tip (Java SE)",
+      "description": "What data, variables, and types mean in Java.",
+      "href": "https://medium.com/p/ff120b88da7a"
+    },
+    {
+      "title": "Git İş Akışını Nasıl Sağlıklı Yönetirim?",
+      "description": "Notes on keeping a Git workflow healthy.",
+      "href": "https://medium.com/p/68df73de7ad8"
+    }
+  ],
+  "more": "More",
+  "moreBefore": "You can read more of my writing on ",
+  "moreMiddle": " and more about my work on ",
+  "moreAfter": ".",
+  "medium": "Medium",
+  "linkedin": "LinkedIn",
+  "languageLabel": "Language"
+}

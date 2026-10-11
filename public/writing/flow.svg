@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220" fill="none">
+  <rect width="640" height="220" rx="8" fill="#f5f4f4"/>
+  <rect x="36" y="68" width="150" height="84" rx="8" fill="#fdfdfc" stroke="#21201c" stroke-width="1.5"/>
+  <rect x="245" y="68" width="150" height="84" rx="8" fill="#fdfdfc" stroke="#763ac7" stroke-width="1.5"/>
+  <rect x="454" y="68" width="150" height="84" rx="8" fill="#fdfdfc" stroke="#21201c" stroke-width="1.5"/>
+  <path d="M186 110h59" stroke="#63635e" stroke-width="1.5"/>
+  <path d="M395 110h59" stroke="#63635e" stroke-width="1.5"/>
+  <path d="M239 110l-8-5v10l8-5z" fill="#63635e"/>
+  <path d="M448 110l-8-5v10l8-5z" fill="#63635e"/>
+  <text x="111" y="116" text-anchor="middle" fill="#21201c" font-family="Inter, sans-serif" font-size="16">İstek</text>
+  <text x="320" y="116" text-anchor="middle" fill="#21201c" font-family="Inter, sans-serif" font-size="16">Servis</text>
+  <text x="529" y="116" text-anchor="middle" fill="#21201c" font-family="Inter, sans-serif" font-size="16">Kayıt</text>
+</svg>

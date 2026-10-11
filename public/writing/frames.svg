@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 280" fill="none">
+  <rect width="640" height="280" rx="8" fill="#f5f4f4"/>
+  <rect x="168" y="36" width="304" height="56" rx="8" fill="#fdfdfc" stroke="#21201c" stroke-width="1.5"/>
+  <rect x="168" y="108" width="304" height="56" rx="8" fill="#fdfdfc" stroke="#21201c" stroke-width="1.5"/>
+  <rect x="168" y="180" width="304" height="56" rx="8" fill="#763ac7"/>
+  <text x="320" y="70" text-anchor="middle" fill="#21201c" font-family="Inter, sans-serif" font-size="16">main</text>
+  <text x="320" y="142" text-anchor="middle" fill="#21201c" font-family="Inter, sans-serif" font-size="16">sign</text>
+  <text x="320" y="214" text-anchor="middle" fill="#fdfdfc" font-family="Inter, sans-serif" font-size="16">store</text>
+</svg>

@@ -1,0 +1,46 @@
+{
+  "title": "Örnek yazı",
+  "description": "Bir yazıda metin, görsel ve kod nasıl durur.",
+  "blocks": [
+    {
+      "type": "p",
+      "text": "Bu sayfa gerçek bir yazı değil. İsim ve unvan yerinde kalsın, gövde de Bugün’ün başladığı yerden açılsın diye duran bir deneme."
+    },
+    {
+      "type": "p",
+      "text": "İlk bakışta düz bir paragraf. Satır aralığı ana sayfadaki metinle aynı. Bir sonraki blokta görsel, ondan sonra da kod var. Amaç süslemek değil, bu kolonda nasıl durduklarına bakmak."
+    },
+    {
+      "type": "figure",
+      "src": "/writing/flow.svg",
+      "alt": "İsteğin servisten kayda giden üç adımı.",
+      "caption": "İstek servise gelir, servis kaydı yazar. Şema, cümlenin genişliğini aşmaz."
+    },
+    {
+      "type": "h2",
+      "text": "Kod"
+    },
+    {
+      "type": "p",
+      "text": "Kısa bir Java parçası. Anahtar kelimeler metinden bir tik ayrı duruyor, blok ise sayfanın gri zemininden bir ton koyu."
+    },
+    {
+      "type": "code",
+      "code": "public final class Agreement {\n    private final String id;\n\n    public Agreement(String id) {\n        this.id = id;\n    }\n\n    public String id() {\n        return id;\n    }\n}"
+    },
+    {
+      "type": "p",
+      "text": "Kodun altı yine düz metin. Uzun bir satır kaydırılır, blok yatayda kayar. İkisi birbirine karışmaz."
+    },
+    {
+      "type": "figure",
+      "src": "/writing/frames.svg",
+      "alt": "Üst üste duran üç yığın çerçevesi.",
+      "caption": "İkinci görsel daha dar bir diyagram. Altyazı, görselin hemen altında ve gövde renginde."
+    },
+    {
+      "type": "p",
+      "text": "Yazı burada bitiyor. İsim de sayfayla birlikte yukarı kayar."
+    }
+  ]
+}

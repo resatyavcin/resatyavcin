@@ -1,0 +1,46 @@
+{
+  "title": "Sample writing",
+  "description": "How text, an image, and code sit in a post.",
+  "blocks": [
+    {
+      "type": "p",
+      "text": "This is not a real essay. It is a stand-in, so the name stays put and the body starts where Today starts."
+    },
+    {
+      "type": "p",
+      "text": "A plain paragraph first, with the same line height as the home page. Then a figure, then code. The point is to see how they sit in this column."
+    },
+    {
+      "type": "figure",
+      "src": "/writing/flow.svg",
+      "alt": "Three steps from a request, through a service, to a record.",
+      "caption": "A request reaches a service, and the service writes a record. The figure stays inside the column."
+    },
+    {
+      "type": "h2",
+      "text": "Code"
+    },
+    {
+      "type": "p",
+      "text": "A short Java fragment. Keywords sit a little apart from the prose, and the block is one step darker than the page."
+    },
+    {
+      "type": "code",
+      "code": "public final class Agreement {\n    private final String id;\n\n    public Agreement(String id) {\n        this.id = id;\n    }\n\n    public String id() {\n        return id;\n    }\n}"
+    },
+    {
+      "type": "p",
+      "text": "Prose continues under the code. A long line wraps. The block scrolls sideways. The two do not mix."
+    },
+    {
+      "type": "figure",
+      "src": "/writing/frames.svg",
+      "alt": "Three stack frames stacked on top of each other.",
+      "caption": "A second, narrower diagram. The caption sits directly under the figure, in the body color."
+    },
+    {
+      "type": "p",
+      "text": "That is the end of the sample. The name scrolls away with the page."
+    }
+  ]
+}

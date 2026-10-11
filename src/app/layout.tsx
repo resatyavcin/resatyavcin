@@ -9,12 +9,12 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Reşat Yavçin",
-  description: "Software developer at TOM Bank.",
+  description: "TOM Bank'ta yazılım geliştirici.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.className} h-full antialiased`}>
+    <html lang="tr" className={`${inter.className} h-full antialiased`}>
       <body className="min-h-full">{children}</body>
     </html>
   );
