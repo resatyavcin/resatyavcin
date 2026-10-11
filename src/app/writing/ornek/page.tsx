@@ -76,7 +76,7 @@ export default function SampleWritingPage() {
                 </figure>
               );
             }
-            if (block.type === "code") {
+            if (block.type === "code" && block.code) {
               return (
                 <pre
                   key={index}
