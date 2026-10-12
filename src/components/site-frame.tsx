@@ -77,6 +77,13 @@ export function SiteFrame({
           Reşat Yavçin
         </a>
         <span className="font-medium leading-none text-[#63635e]">{text.role}</span>
+        <a
+          href="/film"
+          className="mt-4 inline-flex items-center gap-1.5 font-medium leading-none text-[#63635e] no-underline hover:text-[#21201c]"
+        >
+          {text.film}
+          <span aria-hidden>→</span>
+        </a>
       </header>
     </div>
   );

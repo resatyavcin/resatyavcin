@@ -1,5 +1,6 @@
 {
   "role": "Software Engineer",
+  "film": "Film lover and critic",
   "today": "Today",
   "paragraphs": [
     "I work as a software developer at TOM Bank, primarily focused on backend engineering. I enjoy building scalable systems, designing reliable services, and finding better ways to solve complex problems.",
@@ -8,6 +9,8 @@
     "Along the way, I also build internal tools and back-office applications with React.",
     "Previously, I worked on the frontend team at Vodafone."
   ],
+  "films": "Films",
+  "openImdb": "Open on IMDb",
   "writing": "Writing",
   "posts": [
     {

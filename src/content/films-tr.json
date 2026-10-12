@@ -1,0 +1,38 @@
+[
+  {
+    "slug": "parasite",
+    "title": "Parazit",
+    "date": "14 Şubat 2026",
+    "score": 9,
+    "poster": "/films/parasite.jpg",
+    "imdb": "https://www.imdb.com/title/tt6751668/",
+    "paragraphs": [
+      "Bu örnek bir eleştiri. Bong Joon-ho evi iki kata ayırır: üst katın camı genişledikçe alt katın penceresi daralır. Sınıf, merdiven gibi kurulur.",
+      "Koku sahnesi filmi bir anda ters çevirir. O ana kadar güldüren plan, utancı saklamaz."
+    ]
+  },
+  {
+    "slug": "in-the-mood-for-love",
+    "title": "Aşk Zamanı",
+    "date": "3 Ocak 2026",
+    "score": 8,
+    "poster": "/films/in-the-mood-for-love.jpg",
+    "imdb": "https://www.imdb.com/title/tt0118694/",
+    "paragraphs": [
+      "Bu örnek bir eleştiri. Wong Kar-wai iki komşuyu dar bir koridorda yan yana yürütür. Konuşulmayan her şey, tekrar eden bir kadrajda birikir.",
+      "Yağmur ve kırmızı duvar filmin asıl cümlesidir. Ayrılık, kapı kapanmadan önce çoktan başlamıştır."
+    ]
+  },
+  {
+    "slug": "the-worst-person-in-the-world",
+    "title": "Dünyanın En Kötü İnsanı",
+    "date": "28 Kasım 2025",
+    "score": 8,
+    "poster": "/films/the-worst-person-in-the-world.jpg",
+    "imdb": "https://www.imdb.com/title/tt10370710/",
+    "paragraphs": [
+      "Bu örnek bir eleştiri. Joachim Trier, Julie'yi bir karardan diğerine koşturur. Film, otuzlu yaşları bir bekleyiş değil, üst üste binen denemeler olarak kurar.",
+      "Zamanın durduğu parti sahnesi, filmin en açık cümlesidir: herkes yerinde kalırken o yürümeye devam eder."
+    ]
+  }
+]

@@ -1,5 +1,6 @@
 {
   "role": "Yazılım Mühendisi",
+  "film": "Film sever ve eleştirmen",
   "today": "Bugün",
   "paragraphs": [
     "Şu anda TOM Bank'ta ağırlıklı olarak backend alanında çalışan bir yazılım geliştiriciyim. Ölçeklenebilir sistemler kurmayı, güvenilir servisler geliştirmeyi ve karmaşık problemlere pratik çözümler üretmeyi seviyorum.",
@@ -8,6 +9,8 @@
     "Backend çalışmalarımın yanında React ile kurum içi araçlar ve yönetim panelleri de geliştiriyorum.",
     "Daha önce ise Vodafone'un frontend ekibinde çalıştım."
   ],
+  "films": "Filmler",
+  "openImdb": "IMDb'de aç",
   "writing": "Yazılar",
   "posts": [
     {

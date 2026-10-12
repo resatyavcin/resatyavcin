@@ -1,0 +1,38 @@
+[
+  {
+    "slug": "parasite",
+    "title": "Parasite",
+    "date": "14 February 2026",
+    "score": 9,
+    "poster": "/films/parasite.jpg",
+    "imdb": "https://www.imdb.com/title/tt6751668/",
+    "paragraphs": [
+      "This is a sample review. Bong Joon-ho splits the house in two: the wider the upstairs glass, the narrower the downstairs window. Class is built like a staircase.",
+      "The smell scene turns the film over in a second. The plan that has been funny until then does not hide the shame."
+    ]
+  },
+  {
+    "slug": "in-the-mood-for-love",
+    "title": "In the Mood for Love",
+    "date": "3 January 2026",
+    "score": 8,
+    "poster": "/films/in-the-mood-for-love.jpg",
+    "imdb": "https://www.imdb.com/title/tt0118694/",
+    "paragraphs": [
+      "This is a sample review. Wong Kar-wai walks two neighbors down a narrow corridor. Everything left unsaid gathers inside a frame that keeps repeating.",
+      "Rain and the red wall are the film's real sentence. The parting has already started before the door closes."
+    ]
+  },
+  {
+    "slug": "the-worst-person-in-the-world",
+    "title": "The Worst Person in the World",
+    "date": "28 November 2025",
+    "score": 8,
+    "poster": "/films/the-worst-person-in-the-world.jpg",
+    "imdb": "https://www.imdb.com/title/tt10370710/",
+    "paragraphs": [
+      "This is a sample review. Joachim Trier sends Julie from one decision to the next. The film treats one's thirties as stacked attempts, not a waiting room.",
+      "The party where time stops is the film's plainest sentence: everyone stays put while she keeps walking."
+    ]
+  }
+]
