@@ -1,10 +1,15 @@
 "use client";
 
 import { useActionState, useCallback, useEffect, useState } from "react";
-import { FilmPoster, type FilmCard } from "@/components/film-series";
+import { FilmPoster, FilmScore, type FilmCard } from "@/components/film-series";
 import { addTitleAction, type AddFilmState } from "@/app/film/actions";
 import { filmText, type FilmRecord } from "@/lib/film";
-import { SiteFrame, useLang, type Lang, type Copy } from "@/components/site-frame";
+import {
+  SiteFrame,
+  useLang,
+  type Lang,
+  type Copy,
+} from "@/components/site-frame";
 import { Tabs } from "@/components/tabs";
 
 type ViewFilm = FilmCard & {
@@ -62,7 +67,10 @@ function AddTitle({
   onAdded: (kind: "film" | "series") => void;
 }) {
   const [open, setOpen] = useState(false);
-  const [state, submit, pending] = useActionState(addTitleAction, null satisfies AddFilmState);
+  const [state, submit, pending] = useActionState(
+    addTitleAction,
+    null satisfies AddFilmState,
+  );
 
   useEffect(() => {
     if (!state?.ok) return;
@@ -130,7 +138,13 @@ function FilmGrid({ films }: { films: readonly FilmCard[] }) {
   );
 }
 
-export function FilmsPage({ films, series }: { films: FilmRecord[]; series: FilmRecord[] }) {
+export function FilmsPage({
+  films,
+  series,
+}: {
+  films: FilmRecord[];
+  series: FilmRecord[];
+}) {
   const { lang, text, choose } = useLang();
   const [catalog, setCatalog] = useState<"films" | "series">("films");
   const showAdded = useCallback((kind: "film" | "series") => {
@@ -145,7 +159,10 @@ export function FilmsPage({ films, series }: { films: FilmRecord[]; series: Film
   const diary = diaryGroups(list);
   const countLabel = `${list.length} ${list.length === 1 ? text.filmCountOne : text.filmCountMany}`;
   const seriesCountLabel = `${shows.length} ${shows.length === 1 ? text.seriesCountOne : text.seriesCountMany}`;
-  const viewLabel = catalog === "films" ? `film-view-tab-${filmView}` : `series-view-tab-${seriesView}`;
+  const viewLabel =
+    catalog === "films"
+      ? `film-view-tab-${filmView}`
+      : `series-view-tab-${seriesView}`;
 
   return (
     <div className="mx-auto max-w-[692px] px-6 pt-[120px] pb-24 text-[#21201c] antialiased sm:pt-44 md:pt-[117px]">
@@ -165,7 +182,11 @@ export function FilmsPage({ films, series }: { films: FilmRecord[]; series: Film
           onChange={setCatalog}
         />
 
-        <div id="catalog-panel" role="tabpanel" aria-labelledby={`catalog-tab-${catalog}`}>
+        <div
+          id="catalog-panel"
+          role="tabpanel"
+          aria-labelledby={`catalog-tab-${catalog}`}
+        >
           {catalog === "films" ? (
             <div className="mb-8 flex flex-wrap items-baseline justify-between gap-x-5 gap-y-6">
               <Tabs
@@ -203,19 +224,53 @@ export function FilmsPage({ films, series }: { films: FilmRecord[]; series: Film
             {catalog === "series" ? (
               <div className="flex flex-wrap gap-4">
                 {(seriesView === "liked" ? likedShows : shows).map((show) => (
-                  <FilmPoster key={show.slug} film={show} href={`/dizi/${show.slug}`} />
+                  <FilmPoster
+                    key={show.slug}
+                    film={show}
+                    href={`/dizi/${show.slug}`}
+                  />
                 ))}
               </div>
             ) : filmView === "diary" ? (
-              <ul className="flex flex-col gap-8">
+              <ul>
                 {diary.map((group) => (
-                  <li key={group.date}>
-                    <p className="mb-3 text-[#63635e]">{group.date}</p>
-                    <div className="flex flex-wrap gap-4">
-                      {group.films.map((film) => (
-                        <FilmPoster key={film.slug} film={film} />
+                  <li key={group.date} className="py-3">
+                    <ul>
+                      {group.films.map((film, index) => (
+                        <li key={film.slug}>
+                          <a
+                            href={`/film/${film.slug}`}
+                            className="flex items-center gap-3 py-2"
+                          >
+                            {film.poster ? (
+                              <img
+                                src={film.poster}
+                                alt=""
+                                width={48}
+                                height={72}
+                                className="aspect-[2/3] w-12 shrink-0 rounded-sm object-cover"
+                              />
+                            ) : (
+                              <span className="aspect-[2/3] w-12 shrink-0 rounded-sm bg-[#efeeea]" />
+                            )}
+                            <span className="flex min-w-0 flex-1 flex-col">
+                              {index === 0 ? (
+                                <span className="text-[#63635e]">
+                                  {group.date}
+                                </span>
+                              ) : null}
+                              <span className="flex items-baseline justify-between gap-4">
+                                <span className="min-w-0">{film.title}</span>
+                                <FilmScore
+                                  score={film.score}
+                                  liked={film.liked}
+                                />
+                              </span>
+                            </span>
+                          </a>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </li>
                 ))}
               </ul>

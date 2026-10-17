@@ -38,7 +38,11 @@ function Star({ fill, size = 12 }: { fill: 0 | 0.5 | 1; size?: number }) {
 
 function StarShape({ className }: { className: string }) {
   return (
-    <svg viewBox="0 0 20 20" aria-hidden className={`block h-full w-full ${className}`}>
+    <svg
+      viewBox="0 0 20 20"
+      aria-hidden
+      className={`block h-full w-full ${className}`}
+    >
       <path
         fill="currentColor"
         d="M10 1.6 12.4 6.9l5.7.6-4.3 3.8 1.3 5.6L10 14.2 4.9 16.9l1.3-5.6L1.9 7.5l5.7-.6L10 1.6Z"
@@ -71,7 +75,13 @@ function Stars({ score }: { score: number }) {
 
 function Heart({ className, size = 12 }: { className: string; size?: number }) {
   return (
-    <svg viewBox="0 0 20 20" width={size} height={size} aria-hidden className={className}>
+    <svg
+      viewBox="0 0 20 20"
+      width={size}
+      height={size}
+      aria-hidden
+      className={className}
+    >
       <path
         fill="currentColor"
         d="M10 16.7 8.8 15.6C5 12.2 2.5 10 2.5 7.3 2.5 5.1 4.2 3.4 6.4 3.4c1.2 0 2.4.6 3.1 1.5.7-.9 1.9-1.5 3.1-1.5 2.2 0 3.9 1.7 3.9 3.9 0 2.7-2.5 4.9-6.3 8.3L10 16.7Z"
@@ -98,14 +108,20 @@ export function ScorePicker({
   }
 
   return (
-    <fieldset className={`flex items-center border-0 p-0 ${disabled ? "opacity-50" : ""}`}>
+    <fieldset
+      className={`flex items-center border-0 p-0 ${disabled ? "opacity-50" : ""}`}
+    >
       <legend className="sr-only">{label}</legend>
       <span className="flex gap-1">
         {Array.from({ length: 5 }, (_, index) => {
           const full = index + 1;
           const half = full - 0.5;
           return (
-            <span key={full} className="relative block" style={{ width: pickerSize, height: pickerSize }}>
+            <span
+              key={full}
+              className="relative block"
+              style={{ width: pickerSize, height: pickerSize }}
+            >
               <Star fill={starFill(score, index)} size={pickerSize} />
               <button
                 type="button"
@@ -153,12 +169,21 @@ export function LikeToggle({
       onClick={() => onChange(!liked)}
       className="cursor-pointer p-0.5 disabled:opacity-50"
     >
-      <Heart size={size} className={liked ? "text-[#21201c]" : "text-[#d9d8d4]"} />
+      <Heart
+        size={size}
+        className={liked ? "text-[#21201c]" : "text-[#d9d8d4]"}
+      />
     </button>
   );
 }
 
-export function FilmScore({ score, liked = false }: { score?: number | null; liked?: boolean }) {
+export function FilmScore({
+  score,
+  liked = false,
+}: {
+  score?: number | null;
+  liked?: boolean;
+}) {
   if (typeof score !== "number" && !liked) return null;
   return (
     <span className="flex shrink-0 items-center gap-1">
@@ -168,21 +193,37 @@ export function FilmScore({ score, liked = false }: { score?: number | null; lik
   );
 }
 
-export function WatchBadge({ status, label }: { status: WatchStatus; label: string }) {
+export function WatchBadge({
+  status,
+  label,
+}: {
+  status: WatchStatus;
+  label: string;
+}) {
   return (
-    <span className={`text-[11px] leading-snug ${status === "following" ? "text-[#3b6fd6]" : "text-[#e07a2f]"}`}>
+    <span
+      className={`text-[11px] leading-snug ${status === "following" ? "text-[#3b6fd6]" : "text-[#e07a2f]"}`}
+    >
       {label}
     </span>
   );
 }
 
 export function FilmPoster({ film, href }: { film: FilmCard; href?: string }) {
-  const label = [film.title, typeof film.score === "number" ? `${film.score}/5` : null, film.watchLabel]
+  const label = [
+    film.title,
+    typeof film.score === "number" ? `${film.score}/5` : null,
+    film.watchLabel,
+  ]
     .filter(Boolean)
     .join(", ");
 
   return (
-    <a href={href ?? `/film/${film.slug}`} aria-label={label} className={posterClass}>
+    <a
+      href={href ?? `/film/${film.slug}`}
+      aria-label={label}
+      className={posterClass}
+    >
       {film.poster ? (
         <img
           src={film.poster}
