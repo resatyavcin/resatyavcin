@@ -1,11 +1,7 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import filmsTr from "@/content/films-tr.json";
-import { FilmView } from "./film-view";
-
-export function generateStaticParams() {
-  return filmsTr.map((film) => ({ slug: film.slug }));
-}
+import { TitleView } from "@/components/title-view";
+import { getFilm } from "@/lib/films";
 
 export default function FilmPage({
   params,
@@ -21,7 +17,8 @@ export default function FilmPage({
 
 async function FilmBody({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (!filmsTr.some((film) => film.slug === slug)) notFound();
+  const film = await getFilm(slug);
+  if (!film) notFound();
 
-  return <FilmView slug={slug} />;
+  return <TitleView item={film} diary />;
 }

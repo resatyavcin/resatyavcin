@@ -76,14 +76,20 @@ export function SiteFrame({
         <a href="/" className="inline-block font-medium no-underline">
           Reşat Yavçin
         </a>
-        <span className="font-medium leading-none text-[#63635e]">{text.role}</span>
-        <a
-          href="/film"
-          className="mt-4 inline-flex items-center gap-1.5 font-medium leading-none text-[#63635e] no-underline hover:text-[#21201c]"
-        >
-          {text.film}
-          <span aria-hidden>→</span>
-        </a>
+        <div className="flex flex-wrap items-baseline gap-x-5">
+          <a
+            href="/"
+            className="font-medium leading-none text-[#63635e] no-underline hover:text-[#21201c]"
+          >
+            {text.role}
+          </a>
+          <a
+            href="/film"
+            className="font-medium leading-none text-[#63635e] no-underline hover:text-[#21201c]"
+          >
+            {text.film}
+          </a>
+        </div>
       </header>
     </div>
   );
