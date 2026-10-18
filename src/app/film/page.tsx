@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { getCatalog } from "@/lib/films";
-import { CatalogSkeleton, FilmsFrame, FilmsPage } from "./films-page";
+import { CatalogSkeleton, FilmsFrame, FilmsPage } from "@/app/film/films-page";
 
 export default function Page() {
   return (
