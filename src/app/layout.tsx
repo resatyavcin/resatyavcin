@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({
   subsets: ["latin", "latin-ext"],
   display: "swap",
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
@@ -22,13 +24,13 @@ export const metadata: Metadata = {
       { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: [{ url: "/icons/icon-180.png", sizes: "180x180", type: "image/png" }],
+    apple: "/apple-touch-icon.png",
   },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="tr" className={`${inter.className} h-full antialiased`}>
+    <html lang="tr" className={cn("h-full", inter.variable)}>
       <body className="min-h-full">{children}</body>
     </html>
   );

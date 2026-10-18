@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import en from "@/content/en.json";
 import tr from "@/content/tr.json";
+import { Button } from "@/components/ui/button";
 
 const copy = { tr, en } as const;
 
@@ -45,30 +47,21 @@ export function SiteFrame({
   return (
     <div className="relative">
       <div
-        className="absolute right-0 bottom-full mb-5 flex items-center gap-2.5 text-sm leading-none"
+        className="absolute right-0 bottom-full mb-5 flex items-center gap-1"
         role="group"
         aria-label={text.languageLabel}
       >
-        {(["tr", "en"] as const).map((code, index) => (
-          <span key={code} className="flex items-center gap-2.5">
-            {index > 0 ? (
-              <span className="text-[#63635e]" aria-hidden>
-                /
-              </span>
-            ) : null}
-            <button
-              type="button"
-              aria-pressed={lang === code}
-              onClick={() => choose(code)}
-              className={
-                lang === code
-                  ? "font-medium text-[#21201c]"
-                  : "text-[#63635e] hover:text-[#21201c]"
-              }
-            >
-              {code.toUpperCase()}
-            </button>
-          </span>
+        {(["tr", "en"] as const).map((code) => (
+          <Button
+            key={code}
+            type="button"
+            variant={lang === code ? "secondary" : "ghost"}
+            size="sm"
+            aria-pressed={lang === code}
+            onClick={() => choose(code)}
+          >
+            {code.toUpperCase()}
+          </Button>
         ))}
       </div>
 
@@ -83,12 +76,12 @@ export function SiteFrame({
           >
             {text.role}
           </a>
-          <a
+          <Link
             href="/film"
             className="font-medium leading-none text-[#63635e] no-underline hover:text-[#21201c]"
           >
             {text.film}
-          </a>
+          </Link>
         </div>
       </header>
     </div>

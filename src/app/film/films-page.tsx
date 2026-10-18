@@ -1,9 +1,12 @@
 "use client";
 
-import { useActionState, useCallback, useEffect, useState } from "react";
+import { useActionState, useCallback, useEffect, useState, type ReactNode } from "react";
 import { FilmPoster, FilmScore, type FilmCard } from "@/components/film-series";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { addTitleAction, type AddFilmState } from "@/app/film/actions";
 import { filmText, type FilmRecord } from "@/lib/film";
+import { imdbId } from "@/lib/imdb";
 import {
   SiteFrame,
   useLang,
@@ -80,13 +83,9 @@ function AddTitle({
 
   if (!open) {
     return (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="cursor-pointer text-[#63635e] hover:text-[#21201c]"
-      >
+      <Button type="button" size="sm" onClick={() => setOpen(true)}>
         {text.addFilm}
-      </button>
+      </Button>
     );
   }
 
@@ -95,28 +94,28 @@ function AddTitle({
   return (
     <form
       action={submit}
-      className="flex basis-full flex-wrap items-baseline gap-x-4 gap-y-2"
+      className="flex flex-wrap items-center gap-2"
       onKeyDown={(event) => {
         if (event.key === "Escape") setOpen(false);
       }}
     >
-      <input
+      <Input
         name="imdb"
         autoFocus
         required
         aria-label={text.addFilmPlaceholder}
         placeholder={text.addFilmPlaceholder}
         disabled={pending}
-        className="w-36 border-b border-[#d9d8d4] bg-transparent outline-none placeholder:text-[#63635e] disabled:opacity-50"
+        className="w-40"
+        onChange={(event) => {
+          const id = imdbId(event.target.value);
+          if (id && event.target.value !== id) event.target.value = id;
+        }}
       />
-      <button
-        type="submit"
-        disabled={pending}
-        className="cursor-pointer text-[#63635e] hover:text-[#21201c] disabled:opacity-50"
-      >
+      <Button type="submit" size="sm" disabled={pending}>
         {pending ? text.addFilmPending : text.addFilm}
-      </button>
-      {error ? <span className="text-[#63635e]">{error}</span> : null}
+      </Button>
+      {error ? <span className="text-sm text-muted-foreground">{error}</span> : null}
     </form>
   );
 }
@@ -130,11 +129,41 @@ const errorCopy = {
 
 function FilmGrid({ films }: { films: readonly FilmCard[] }) {
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap justify-center gap-4">
       {films.map((film) => (
         <FilmPoster key={film.slug} film={film} />
       ))}
     </div>
+  );
+}
+
+export function FilmsFrame({ children }: { children: ReactNode }) {
+  const { lang, text, choose } = useLang();
+
+  return (
+    <div className="mx-auto max-w-[692px] px-6 pt-[120px] pb-24 text-[#21201c] antialiased sm:pt-44 md:pt-[117px]">
+      <SiteFrame text={text} lang={lang} choose={choose} />
+      <main>{children}</main>
+    </div>
+  );
+}
+
+export function CatalogSkeleton() {
+  return (
+    <>
+      <div className="mb-3 h-8 w-52 animate-pulse rounded-lg bg-muted" />
+      <div className="mb-8 flex items-center justify-between gap-3">
+        <div className="h-8 w-44 animate-pulse rounded-lg bg-muted" />
+        <div className="h-7 w-14 animate-pulse rounded-lg bg-[#21201c]" />
+      </div>
+      <div className="flex flex-wrap justify-center gap-4" aria-hidden>
+        {Array.from({ length: 12 }, (_, index) => (
+          <div key={index} className="w-24 sm:w-28">
+            <div className="aspect-[2/3] w-full animate-pulse rounded-sm bg-muted" />
+          </div>
+        ))}
+      </div>
+    </>
   );
 }
 
@@ -145,7 +174,7 @@ export function FilmsPage({
   films: FilmRecord[];
   series: FilmRecord[];
 }) {
-  const { lang, text, choose } = useLang();
+  const { lang, text } = useLang();
   const [catalog, setCatalog] = useState<"films" | "series">("films");
   const showAdded = useCallback((kind: "film" | "series") => {
     setCatalog(kind === "series" ? "series" : "films");
@@ -165,121 +194,108 @@ export function FilmsPage({
       : `series-view-tab-${seriesView}`;
 
   return (
-    <div className="mx-auto max-w-[692px] px-6 pt-[120px] pb-24 text-[#21201c] antialiased sm:pt-44 md:pt-[117px]">
-      <SiteFrame text={text} lang={lang} choose={choose} />
+    <>
+      <Tabs
+        id="catalog"
+        label={text.film}
+        panelId="catalog-panel"
+        className="mb-3"
+        tabs={[
+          { id: "films", label: text.filmAll, meta: countLabel },
+          { id: "series", label: text.filmSeries, meta: seriesCountLabel },
+        ]}
+        value={catalog}
+        onChange={setCatalog}
+      />
 
-      <main>
-        <Tabs
-          id="catalog"
-          label={text.film}
-          panelId="catalog-panel"
-          className="mb-3"
-          tabs={[
-            { id: "films", label: text.filmAll, meta: countLabel },
-            { id: "series", label: text.filmSeries, meta: seriesCountLabel },
-          ]}
-          value={catalog}
-          onChange={setCatalog}
-        />
-
-        <div
-          id="catalog-panel"
-          role="tabpanel"
-          aria-labelledby={`catalog-tab-${catalog}`}
-        >
-          {catalog === "films" ? (
-            <div className="mb-8 flex flex-wrap items-baseline justify-between gap-x-5 gap-y-6">
-              <Tabs
-                id="film-view"
-                label={text.filmAll}
-                panelId="catalog-view"
-                tabs={[
-                  { id: "all", label: text.seriesAll },
-                  { id: "diary", label: text.filmDiary },
-                  { id: "liked", label: text.filmLiked },
-                ]}
-                value={filmView}
-                onChange={setFilmView}
-              />
-              <AddTitle text={text} onAdded={showAdded} />
-            </div>
-          ) : (
-            <div className="mb-8 flex flex-wrap items-baseline justify-between gap-x-5 gap-y-6">
-              <Tabs
-                id="series-view"
-                label={text.filmSeries}
-                panelId="catalog-view"
-                tabs={[
-                  { id: "all", label: text.seriesAll },
-                  { id: "liked", label: text.filmLiked },
-                ]}
-                value={seriesView}
-                onChange={setSeriesView}
-              />
-              <AddTitle text={text} onAdded={showAdded} />
-            </div>
-          )}
-
-          <div id="catalog-view" role="tabpanel" aria-labelledby={viewLabel}>
-            {catalog === "series" ? (
-              <div className="flex flex-wrap gap-4">
-                {(seriesView === "liked" ? likedShows : shows).map((show) => (
-                  <FilmPoster
-                    key={show.slug}
-                    film={show}
-                    href={`/dizi/${show.slug}`}
-                  />
-                ))}
-              </div>
-            ) : filmView === "diary" ? (
-              <ul>
-                {diary.map((group) => (
-                  <li key={group.date} className="py-3">
-                    <ul>
-                      {group.films.map((film, index) => (
-                        <li key={film.slug}>
-                          <a
-                            href={`/film/${film.slug}`}
-                            className="flex items-center gap-3 py-2"
-                          >
-                            {film.poster ? (
-                              <img
-                                src={film.poster}
-                                alt=""
-                                width={48}
-                                height={72}
-                                className="aspect-[2/3] w-12 shrink-0 rounded-sm object-cover"
-                              />
-                            ) : (
-                              <span className="aspect-[2/3] w-12 shrink-0 rounded-sm bg-[#efeeea]" />
-                            )}
-                            <span className="flex min-w-0 flex-1 flex-col">
-                              {index === 0 ? (
-                                <span className="text-[#63635e]">
-                                  {group.date}
-                                </span>
-                              ) : null}
-                              <span className="flex items-baseline justify-between gap-4">
-                                <span className="min-w-0">{film.title}</span>
-                                <FilmScore
-                                  score={film.score}
-                                  liked={film.liked}
-                                />
-                              </span>
-                            </span>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <FilmGrid films={filmView === "liked" ? liked : list} />
-            )}
+      <div id="catalog-panel" role="tabpanel" aria-labelledby={`catalog-tab-${catalog}`}>
+        {catalog === "films" ? (
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+            <Tabs
+              id="film-view"
+              label={text.filmAll}
+              panelId="catalog-view"
+              tabs={[
+                { id: "all", label: text.seriesAll },
+                { id: "diary", label: text.filmDiary },
+                { id: "liked", label: text.filmLiked },
+              ]}
+              value={filmView}
+              onChange={setFilmView}
+            />
+            <AddTitle text={text} onAdded={showAdded} />
           </div>
+        ) : (
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+            <Tabs
+              id="series-view"
+              label={text.filmSeries}
+              panelId="catalog-view"
+              tabs={[
+                { id: "all", label: text.seriesAll },
+                { id: "liked", label: text.filmLiked },
+              ]}
+              value={seriesView}
+              onChange={setSeriesView}
+            />
+            <AddTitle text={text} onAdded={showAdded} />
+          </div>
+        )}
+
+        <div id="catalog-view" role="tabpanel" aria-labelledby={viewLabel}>
+          {catalog === "series" ? (
+            <div className="flex flex-wrap justify-center gap-4">
+              {(seriesView === "liked" ? likedShows : shows).map((show) => (
+                <FilmPoster
+                  key={show.slug}
+                  film={show}
+                  href={`/dizi/${show.slug}`}
+                />
+              ))}
+            </div>
+          ) : filmView === "diary" ? (
+            <ul>
+              {diary.map((group) => (
+                <li key={group.date} className="py-3">
+                  <ul>
+                    {group.films.map((film, index) => (
+                      <li key={film.slug}>
+                        <a
+                          href={`/film/${film.slug}`}
+                          className="flex items-center gap-3 py-2"
+                        >
+                          {film.poster ? (
+                            <img
+                              src={film.poster}
+                              alt=""
+                              width={48}
+                              height={72}
+                              className="aspect-[2/3] w-12 shrink-0 rounded-sm object-cover"
+                            />
+                          ) : (
+                            <span className="aspect-[2/3] w-12 shrink-0 rounded-sm bg-[#efeeea]" />
+                          )}
+                          <span className="flex min-w-0 flex-1 flex-col">
+                            {index === 0 ? (
+                              <span className="text-[#63635e]">{group.date}</span>
+                            ) : null}
+                            <span className="flex items-baseline justify-between gap-4">
+                              <span className="min-w-0">{film.title}</span>
+                              <FilmScore score={film.score} liked={film.liked} />
+                            </span>
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <FilmGrid films={filmView === "liked" ? liked : list} />
+          )}
         </div>
-      </main>
-    </div>
+      </div>
+    </>
   );
 }

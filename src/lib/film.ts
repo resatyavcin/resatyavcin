@@ -10,6 +10,7 @@ export type FilmRecord = {
   watchedOn: string | null;
   watchStatus: WatchStatus | null;
   imdb: string | null;
+  youtube: string | null;
   reviewTr: string[];
   reviewEn: string[];
 };

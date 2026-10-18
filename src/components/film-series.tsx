@@ -1,6 +1,7 @@
 "use client";
 
 import type { WatchStatus } from "@/lib/film";
+import { Button } from "@/components/ui/button";
 
 export type FilmCard = {
   slug: string;
@@ -28,7 +29,7 @@ function Star({ fill, size = 12 }: { fill: 0 | 0.5 | 1; size?: number }) {
           style={{ width: fill === 1 ? "100%" : "50%" }}
         >
           <span className="block" style={{ width: size, height: size }}>
-            <StarShape className="text-[#21201c]" />
+            <StarShape className="text-orange-500" />
           </span>
         </span>
       ) : null}
@@ -77,10 +78,9 @@ function Heart({ className, size = 12 }: { className: string; size?: number }) {
   return (
     <svg
       viewBox="0 0 20 20"
-      width={size}
-      height={size}
       aria-hidden
       className={className}
+      style={{ width: size, height: size }}
     >
       <path
         fill="currentColor"
@@ -123,21 +123,23 @@ export function ScorePicker({
               style={{ width: pickerSize, height: pickerSize }}
             >
               <Star fill={starFill(score, index)} size={pickerSize} />
-              <button
+              <Button
                 type="button"
+                variant="ghost"
                 aria-label={`${half}/5`}
                 aria-pressed={score === half}
                 disabled={disabled}
                 onClick={() => choose(half)}
-                className="absolute inset-y-0 left-0 w-1/2 cursor-pointer"
+                className="absolute inset-y-0 left-0 h-full w-1/2 rounded-none bg-transparent p-0 hover:bg-transparent"
               />
-              <button
+              <Button
                 type="button"
+                variant="ghost"
                 aria-label={`${full}/5`}
                 aria-pressed={score === full}
                 disabled={disabled}
                 onClick={() => choose(full)}
-                className="absolute inset-y-0 right-0 w-1/2 cursor-pointer"
+                className="absolute inset-y-0 right-0 h-full w-1/2 rounded-none bg-transparent p-0 hover:bg-transparent"
               />
             </span>
           );
@@ -161,19 +163,20 @@ export function LikeToggle({
   onChange: (liked: boolean) => void;
 }) {
   return (
-    <button
+    <Button
       type="button"
+      variant="ghost"
+      size="icon"
       aria-pressed={liked}
       aria-label={label}
       disabled={disabled}
       onClick={() => onChange(!liked)}
-      className="cursor-pointer p-0.5 disabled:opacity-50"
     >
       <Heart
         size={size}
-        className={liked ? "text-[#21201c]" : "text-[#d9d8d4]"}
+        className="text-red-500"
       />
-    </button>
+    </Button>
   );
 }
 
@@ -188,7 +191,7 @@ export function FilmScore({
   return (
     <span className="flex shrink-0 items-center gap-1">
       {typeof score === "number" ? <Stars score={score} /> : null}
-      {liked ? <Heart className="text-[#21201c]" /> : null}
+      {liked ? <Heart className="text-red-500" /> : null}
     </span>
   );
 }

@@ -5,7 +5,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { fetchTmdbTitle, findTmdbTitle, type TitleKind } from "@/lib/tmdb";
 
 const columns =
-  "id, tmdb_id, kind, liked, score, watched_on, watch_status, review_tr, review_en, slug, title_tr, title_en, poster_path, release_date, imdb_id, synced_at, created_at";
+  "id, tmdb_id, kind, liked, score, watched_on, watch_status, review_tr, review_en, slug, title_tr, title_en, poster_path, release_date, imdb_id, youtube, synced_at, created_at";
 
 type FilmRow = {
   id: string;
@@ -23,6 +23,7 @@ type FilmRow = {
   poster_path: string | null;
   release_date: string | null;
   imdb_id: string | null;
+  youtube: string | null;
   synced_at: string | null;
   created_at: string;
 };
@@ -63,6 +64,7 @@ function toRecord(row: FilmRow): FilmRecord | null {
     watchedOn: row.watched_on,
     watchStatus: toWatchStatus(row.watch_status),
     imdb: row.imdb_id ? `https://www.imdb.com/title/${row.imdb_id}/` : null,
+    youtube: row.youtube,
     reviewTr: paragraphs(row.review_tr),
     reviewEn: paragraphs(row.review_en),
   };
@@ -247,6 +249,18 @@ export async function updateWatchStatus(slug: string, status: WatchStatus | null
     .update({ watch_status: status })
     .eq("slug", slug)
     .eq("kind", "series")
+    .select("id")
+    .maybeSingle();
+  return !error && Boolean(data);
+}
+
+export async function updateYoutube(slug: string, youtube: string | null) {
+  const supabase = supabaseAdmin();
+  if (!supabase) return false;
+  const { data, error } = await supabase
+    .from("films")
+    .update({ youtube })
+    .eq("slug", slug)
     .select("id")
     .maybeSingle();
   return !error && Boolean(data);

@@ -1,12 +1,14 @@
 import { Suspense } from "react";
 import { getCatalog } from "@/lib/films";
-import { FilmsPage } from "./films-page";
+import { CatalogSkeleton, FilmsFrame, FilmsPage } from "./films-page";
 
 export default function Page() {
   return (
-    <Suspense fallback={null}>
-      <FilmList />
-    </Suspense>
+    <FilmsFrame>
+      <Suspense fallback={<CatalogSkeleton />}>
+        <FilmList />
+      </Suspense>
+    </FilmsFrame>
   );
 }
 

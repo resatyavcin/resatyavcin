@@ -1,13 +1,91 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { deleteTitleAction, setLikedAction, setReviewAction, setScoreAction, setWatchStatusAction, setWatchedOnAction } from "@/app/film/actions";
-import { FilmScore, LikeToggle, ScorePicker } from "@/components/film-series";
+import { useEffect, useRef, useState } from "react";
+import { deleteTitleAction, setLikedAction, setReviewAction, setScoreAction, setWatchStatusAction, setWatchedOnAction, setYoutubeAction } from "@/app/film/actions";
+import { LikeToggle, ScorePicker } from "@/components/film-series";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { filmText, type FilmRecord, type WatchStatus } from "@/lib/film";
+import { youtubeId } from "@/lib/youtube";
 import { SiteFrame, useLang, type Copy, type Lang } from "@/components/site-frame";
 
 function reviewText(item: FilmRecord, lang: Lang) {
   return (lang === "tr" ? item.reviewTr : item.reviewEn).join("\n\n");
+}
+
+function youtubeLink(id: string | null) {
+  return id ? `https://www.youtube.com/watch?v=${id}` : "";
+}
+
+function YoutubePlayer({ videoId }: { videoId: string }) {
+  const frame = useRef<HTMLIFrameElement>(null);
+  const [src, setSrc] = useState<string | null>(null);
+  const [title, setTitle] = useState<string | null>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams({
+      autoplay: "1",
+      playsinline: "1",
+      rel: "0",
+      controls: "0",
+      enablejsapi: "1",
+      origin: window.location.origin,
+    });
+    setSrc(`https://www.youtube.com/embed/${videoId}?${params}`);
+  }, [videoId]);
+
+  useEffect(() => {
+    function onMessage(event: MessageEvent) {
+      if (event.origin !== "https://www.youtube.com") return;
+      if (event.source !== frame.current?.contentWindow) return;
+      let data: { info?: { videoData?: { title?: string } } } = {};
+      if (typeof event.data === "string") {
+        try {
+          data = JSON.parse(event.data);
+        } catch {
+          return;
+        }
+      } else if (event.data && typeof event.data === "object") {
+        data = event.data;
+      }
+      const name = data.info?.videoData?.title;
+      if (name) setTitle(name);
+    }
+
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
+
+  function play() {
+    const player = frame.current?.contentWindow;
+    if (!player) return;
+    const target = "https://www.youtube.com";
+    player.postMessage(JSON.stringify({ event: "listening", id: videoId }), target);
+    player.postMessage(JSON.stringify({ event: "command", func: "unMute", args: [] }), target);
+    player.postMessage(JSON.stringify({ event: "command", func: "playVideo", args: [] }), target);
+  }
+
+  return (
+    <>
+      {title ? <p className="truncate text-sm text-muted-foreground">{title}</p> : null}
+      {src ? (
+        <iframe
+          ref={frame}
+          src={src}
+          title="YouTube"
+          allow="autoplay; encrypted-media"
+          tabIndex={-1}
+          aria-hidden
+          onLoad={play}
+          className="pointer-events-none fixed right-0 bottom-0 h-[200px] w-[200px] border-0 opacity-0"
+        />
+      ) : null}
+    </>
+  );
 }
 
 function todayISO() {
@@ -51,41 +129,39 @@ function DiaryDate({
   }
 
   return (
-    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
-      <input
-        type="date"
-        value={date}
-        aria-label={text.diaryDate}
-        disabled={pending}
-        onChange={(event) => {
-          const next = event.target.value;
-          if (!next) return;
-          if (inDiary) void save(next);
-          else setDate(next);
-        }}
-        className="border-b border-[#d9d8d4] bg-transparent text-[#21201c] outline-none disabled:opacity-50"
-      />
-      {inDiary ? (
-        <button
-          type="button"
+    <div className="grid gap-2">
+      <Label htmlFor={`${item.slug}-watched`}>{text.diaryDate}</Label>
+      <div className="flex flex-wrap items-center gap-2">
+        <Input
+          id={`${item.slug}-watched`}
+          type="date"
+          value={date}
           disabled={pending}
-          onClick={() => void save(null)}
-          className="cursor-pointer text-[#63635e] hover:text-[#21201c] disabled:opacity-50"
-        >
-          {text.removeFromDiary}
-        </button>
-      ) : (
-        <button
-          type="button"
-          disabled={pending || !date}
-          onClick={() => {
-            if (date) void save(date);
+          onChange={(event) => {
+            const next = event.target.value;
+            if (!next) return;
+            if (inDiary) void save(next);
+            else setDate(next);
           }}
-          className="cursor-pointer text-[#63635e] hover:text-[#21201c] disabled:opacity-50"
-        >
-          {text.addToDiary}
-        </button>
-      )}
+          className="w-44"
+        />
+        {inDiary ? (
+          <Button type="button" variant="outline" size="sm" disabled={pending} onClick={() => void save(null)}>
+            {text.removeFromDiary}
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            size="sm"
+            disabled={pending || !date}
+            onClick={() => {
+              if (date) void save(date);
+            }}
+          >
+            {text.addToDiary}
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
@@ -117,28 +193,28 @@ function SeriesStatus({
     if (!ok) setStatus(previous);
   }
 
-  const buttonClass = "cursor-pointer disabled:opacity-50";
-
   return (
-    <div className="flex flex-wrap gap-x-4 gap-y-2">
-      <button
+    <div className="flex flex-wrap gap-2">
+      <Button
         type="button"
+        variant={status === "following" ? "default" : "outline"}
+        size="sm"
         aria-pressed={status === "following"}
         disabled={pending}
         onClick={() => choose("following")}
-        className={`${buttonClass} ${status === "following" ? "text-[#3b6fd6]" : "text-[#63635e] hover:text-[#21201c]"}`}
       >
         {text.following}
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
+        variant={status === "dropped" ? "default" : "outline"}
+        size="sm"
         aria-pressed={status === "dropped"}
         disabled={pending}
         onClick={() => choose("dropped")}
-        className={`${buttonClass} ${status === "dropped" ? "text-[#e07a2f]" : "text-[#63635e] hover:text-[#21201c]"}`}
       >
         {text.dropped}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -159,6 +235,8 @@ function EntryEditor({
   const [score, setScore] = useState(item.score);
   const [liked, setLiked] = useState(item.liked);
   const [review, setReview] = useState(reviewText(item, lang));
+  const [youtube, setYoutube] = useState(youtubeLink(item.youtube));
+  const [youtubeInvalid, setYoutubeInvalid] = useState(false);
   const [pending, setPending] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -166,6 +244,8 @@ function EntryEditor({
     setScore(item.score);
     setLiked(item.liked);
     setReview(reviewText(item, lang));
+    setYoutube(youtubeLink(item.youtube));
+    setYoutubeInvalid(false);
   }, [item, lang]);
 
   async function chooseScore(next: number | null) {
@@ -186,6 +266,19 @@ function EntryEditor({
     if (!ok) setLiked(previous);
   }
 
+  async function saveYoutube(next: string) {
+    const trimmed = next.trim();
+    if (trimmed && !youtubeId(trimmed)) {
+      setYoutubeInvalid(true);
+      return;
+    }
+    setYoutubeInvalid(false);
+    setPending(true);
+    const ok = await setYoutubeAction(item.slug, trimmed || null);
+    setPending(false);
+    if (!ok) setYoutubeInvalid(true);
+  }
+
   async function saveReview() {
     setPending(true);
     const ok = await setReviewAction(item.slug, lang, review);
@@ -203,68 +296,118 @@ function EntryEditor({
   }
 
   return (
-    <div className="mt-6 flex flex-col gap-4">
-      {series ? <SeriesStatus item={item} text={text} pending={pending} setPending={setPending} /> : null}
-      {diary ? <DiaryDate item={item} text={text} pending={pending} setPending={setPending} /> : null}
-      <div className="flex items-center gap-3">
-        <ScorePicker label={text.addFilmScore} score={score} disabled={pending} onChange={chooseScore} />
-        <LikeToggle
-          liked={liked}
-          label={liked ? text.removeLike : text.addLike}
-          disabled={pending}
-          size={18}
-          onChange={chooseLiked}
-        />
-      </div>
-      <textarea
-        value={review}
-        rows={4}
-        aria-label={text.addFilmReview}
-        placeholder={text.addFilmReview}
-        disabled={pending}
-        onChange={(event) => setReview(event.target.value)}
-        className="w-full resize-y border-b border-[#d9d8d4] bg-transparent text-[#63635e] outline-none placeholder:text-[#63635e] disabled:opacity-50"
-      />
-      <button
-        type="button"
-        disabled={pending || review === reviewText(item, lang)}
-        onClick={saveReview}
-        className="w-fit cursor-pointer text-[#63635e] hover:text-[#21201c] disabled:opacity-50"
-      >
-        {text.saveReview}
-      </button>
-      <div className="flex items-baseline gap-4">
-        {confirmDelete ? (
-          <>
-            <button
-              type="button"
+    <Card>
+      <CardContent className="flex flex-col gap-5">
+        <div className="grid gap-2">
+          <Label>{text.addFilmScore}</Label>
+          <div className="flex items-center gap-1">
+            <ScorePicker label={text.addFilmScore} score={score} disabled={pending} onChange={chooseScore} />
+            <LikeToggle
+              liked={liked}
+              label={liked ? text.removeLike : text.addLike}
               disabled={pending}
-              onClick={removeTitle}
-              className="cursor-pointer text-[#63635e] hover:text-[#21201c] disabled:opacity-50"
-            >
-              {text.removeTitleConfirm}
-            </button>
-            <button
-              type="button"
-              disabled={pending}
-              onClick={() => setConfirmDelete(false)}
-              className="cursor-pointer text-[#63635e] hover:text-[#21201c] disabled:opacity-50"
-            >
-              {text.cancel}
-            </button>
-          </>
-        ) : (
-          <button
-            type="button"
+              size={28}
+              onChange={chooseLiked}
+            />
+          </div>
+        </div>
+        <Separator />
+        {series ? <SeriesStatus item={item} text={text} pending={pending} setPending={setPending} /> : null}
+        {diary ? <DiaryDate item={item} text={text} pending={pending} setPending={setPending} /> : null}
+        {series || diary ? <Separator /> : null}
+        <div className="grid gap-2">
+          <Label htmlFor={`${item.slug}-youtube`}>{text.youtube}</Label>
+          <Input
+            id={`${item.slug}-youtube`}
+            value={youtube}
+            placeholder={text.youtubePlaceholder}
             disabled={pending}
-            onClick={() => setConfirmDelete(true)}
-            className="cursor-pointer text-[#63635e] hover:text-[#21201c] disabled:opacity-50"
+            onChange={(event) => {
+              setYoutube(event.target.value);
+              setYoutubeInvalid(false);
+            }}
+          />
+          <div className="flex flex-wrap justify-end gap-2">
+            {item.youtube ? (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={pending}
+                onClick={() => {
+                  setYoutube("");
+                  void saveYoutube("");
+                }}
+              >
+                {text.removeYoutube}
+              </Button>
+            ) : null}
+            <Button
+              type="button"
+              size="sm"
+              disabled={pending || youtube.trim() === youtubeLink(item.youtube)}
+              onClick={() => void saveYoutube(youtube)}
+            >
+              {text.saveReview}
+            </Button>
+          </div>
+          {youtubeInvalid ? <p className="text-sm text-destructive">{text.youtubeInvalid}</p> : null}
+        </div>
+        <Separator />
+        <div className="grid gap-2">
+          <Label htmlFor={`${item.slug}-review`}>{text.addFilmReview}</Label>
+          <Textarea
+            id={`${item.slug}-review`}
+            value={review}
+            rows={5}
+            placeholder={text.addFilmReview}
+            disabled={pending}
+            onChange={(event) => setReview(event.target.value)}
+            className="min-h-32"
+          />
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              size="sm"
+              disabled={pending || review === reviewText(item, lang)}
+              onClick={saveReview}
+            >
+              {text.saveReview}
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="flex-wrap justify-between gap-3">
+        {item.imdb ? (
+          <a
+            href={item.imdb}
+            target="_blank"
+            rel="noreferrer"
+            className={buttonVariants({ variant: "outline", size: "sm" })}
           >
-            {text.removeTitle}
-          </button>
+            {text.openImdb}
+          </a>
+        ) : (
+          <span />
         )}
-      </div>
-    </div>
+        <div className="flex flex-wrap gap-2">
+          {confirmDelete ? (
+            <>
+              <Button type="button" variant="outline" size="sm" disabled={pending} onClick={() => setConfirmDelete(false)}>
+                {text.cancel}
+              </Button>
+              <Button type="button" variant="destructive" size="sm" disabled={pending} onClick={removeTitle}>
+                {text.removeTitleConfirm}
+              </Button>
+            </>
+          ) : (
+            <Button type="button" variant="destructive" size="sm" disabled={pending} onClick={() => setConfirmDelete(true)}>
+              {text.removeTitle}
+            </Button>
+          )}
+        </div>
+      </CardFooter>
+    </Card>
   );
 }
 
@@ -284,47 +427,33 @@ export function TitleView({
     <div className="mx-auto max-w-[692px] px-6 pt-[120px] pb-24 text-[#21201c] antialiased sm:pt-44 md:pt-[117px]">
       <SiteFrame text={text} lang={lang} choose={choose} />
 
-      <main>
-        <div className="mb-5 flex items-start gap-4 sm:mb-6">
+      <main className="flex flex-col gap-8">
+        <header className="flex items-center gap-5">
           {item.poster ? (
             <img
               src={item.poster}
               alt=""
-              width={96}
-              height={144}
-              className="h-36 w-24 shrink-0 rounded-sm"
+              width={128}
+              height={192}
+              className="h-48 w-32 shrink-0 rounded-xl object-cover ring-1 ring-foreground/10"
             />
           ) : (
-            <span className="block h-36 w-24 shrink-0 rounded-sm bg-[#efeeea]" />
+            <span className="block h-48 w-32 shrink-0 rounded-xl bg-muted ring-1 ring-foreground/10" />
           )}
-          <div>
-            <h1 className="block font-medium">{copy.title}</h1>
-            {copy.dateLabel ? (
-              <span className="mt-1 block text-[#63635e]">{copy.dateLabel}</span>
-            ) : null}
-            <span className="mt-2 block">
-              <FilmScore score={item.score} liked={item.liked} />
-            </span>
+          <div className="min-w-0 space-y-2 pb-1">
+            <h1 className="text-2xl font-semibold tracking-tight">{copy.title}</h1>
+            {copy.dateLabel ? <p className="text-sm text-muted-foreground">{copy.dateLabel}</p> : null}
+            {item.youtube ? <YoutubePlayer videoId={item.youtube} /> : null}
           </div>
-        </div>
+        </header>
         {copy.paragraphs.length > 0 ? (
-          <div className="flex flex-col gap-4 text-[#63635e] leading-[1.65]">
+          <div className="flex flex-col gap-3 text-sm leading-relaxed text-muted-foreground">
             {copy.paragraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
         ) : null}
         <EntryEditor item={item} lang={lang} text={text} diary={diary} series={series} />
-        {item.imdb ? (
-          <a
-            href={item.imdb}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-8 inline-block underline"
-          >
-            {text.openImdb}
-          </a>
-        ) : null}
       </main>
     </div>
   );

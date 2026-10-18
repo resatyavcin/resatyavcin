@@ -3,14 +3,11 @@
 import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import type { WatchStatus } from "@/lib/film";
-import { addTitle, deleteTitle, updateLiked, updateReview, updateScore, updateWatchStatus, updateWatchedOn, type AddFilmResult } from "@/lib/films";
+import { addTitle, deleteTitle, updateLiked, updateReview, updateScore, updateYoutube, updateWatchStatus, updateWatchedOn, type AddFilmResult } from "@/lib/films";
+import { imdbId } from "@/lib/imdb";
+import { youtubeId } from "@/lib/youtube";
 
 export type AddFilmState = AddFilmResult | null;
-
-function imdbIdFrom(value: string) {
-  const match = value.trim().match(/tt\d{7,}/i);
-  return match ? match[0].toLowerCase() : null;
-}
 
 function dateFrom(value: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
@@ -27,10 +24,10 @@ function slugFrom(value: string) {
 }
 
 export async function addTitleAction(_state: AddFilmState, formData: FormData): Promise<AddFilmState> {
-  const imdbId = imdbIdFrom(String(formData.get("imdb") ?? ""));
-  if (!imdbId) return { ok: false, error: "invalid" };
+  const id = imdbId(String(formData.get("imdb") ?? ""));
+  if (!id) return { ok: false, error: "invalid" };
 
-  const result = await addTitle(imdbId);
+  const result = await addTitle(id);
   if (result.ok) refresh();
   return result;
 }
@@ -81,6 +78,16 @@ export async function setWatchedOnAction(slug: string, watchedOn: string | null)
   const date = watchedOn === null ? null : dateFrom(watchedOn);
   if (!id || (watchedOn !== null && !date)) return false;
   const ok = await updateWatchedOn(id, date);
+  if (ok) refresh();
+  return ok;
+}
+
+export async function setYoutubeAction(slug: string, value: string | null) {
+  const id = slugFrom(slug);
+  const trimmed = value?.trim() ?? "";
+  const youtube = trimmed ? youtubeId(trimmed) : null;
+  if (!id || (trimmed && !youtube)) return false;
+  const ok = await updateYoutube(id, youtube);
   if (ok) refresh();
   return ok;
 }
