@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import en from "@/content/en.json";
 import tr from "@/content/tr.json";
 import { Button } from "@/components/ui/button";
@@ -69,20 +68,12 @@ export function SiteFrame({
         <a href="/" className="inline-block font-medium no-underline">
           Reşat Yavçin
         </a>
-        <div className="flex flex-wrap items-baseline gap-x-5">
-          <a
-            href="/"
-            className="font-medium leading-none text-[#63635e] no-underline hover:text-[#21201c]"
-          >
-            {text.role}
-          </a>
-          <Link
-            href="/film"
-            className="font-medium leading-none text-[#63635e] no-underline hover:text-[#21201c]"
-          >
-            {text.film}
-          </Link>
-        </div>
+        <a
+          href="/"
+          className="font-medium leading-none text-[#63635e] no-underline hover:text-[#21201c]"
+        >
+          {text.role}
+        </a>
       </header>
     </div>
   );

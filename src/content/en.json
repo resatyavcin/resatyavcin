@@ -1,6 +1,5 @@
 {
   "role": "Software Engineer",
-  "film": "Film lover",
   "today": "Today",
   "paragraphs": [
     "I work as a software developer at TOM Bank, primarily focused on backend engineering. I enjoy building scalable systems, designing reliable services, and finding better ways to solve complex problems.",
@@ -9,8 +8,6 @@
     "Along the way, I also build internal tools and back-office applications with React.",
     "Previously, I worked on the frontend team at Vodafone."
   ],
-  "films": "Films",
-  "openImdb": "Open on IMDb",
   "writing": "Writing",
   "posts": [
     {
@@ -45,39 +42,5 @@
   "moreAfter": ".",
   "medium": "Medium",
   "linkedin": "LinkedIn",
-  "languageLabel": "Language",
-  "filmAll": "Films",
-  "filmSeries": "Series",
-  "seriesAll": "All",
-  "filmDiary": "Diary",
-  "filmLiked": "Liked",
-  "filmCountOne": "film",
-  "filmCountMany": "films",
-  "seriesCountOne": "series",
-  "seriesCountMany": "series",
-  "addFilm": "Add",
-  "addToDiary": "Add to diary",
-  "removeFromDiary": "Remove from diary",
-  "diaryDate": "Date",
-  "addToAll": "Add to all",
-  "addFilmPlaceholder": "imdb.com/title/…",
-  "addFilmScore": "Score",
-  "addFilmReview": "Review",
-  "addLike": "Like",
-  "removeLike": "Remove like",
-  "following": "Following",
-  "dropped": "Dropped",
-  "saveReview": "Save",
-  "youtube": "YouTube",
-  "youtubePlaceholder": "YouTube link",
-  "youtubeInvalid": "Invalid YouTube link",
-  "removeYoutube": "Remove",
-  "removeTitle": "Delete",
-  "removeTitleConfirm": "Delete permanently",
-  "cancel": "Cancel",
-  "addFilmPending": "Adding",
-  "addFilmInvalid": "Invalid IMDb link",
-  "addFilmDuplicate": "Already added",
-  "addFilmMissing": "Not found",
-  "addFilmUnavailable": "Could not add"
+  "languageLabel": "Language"
 }
